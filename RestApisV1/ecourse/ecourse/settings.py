@@ -25,6 +25,9 @@ SECRET_KEY = 'django-insecure-*e!0l11f70gpr5*9r(5*nk-zo%k73z#0f)97v@tqpefteijvlc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
+
+
 ALLOWED_HOSTS = []
 
 
@@ -37,8 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'courses.apps.CoursesConfig'
+    'courses.apps.CoursesConfig',
+    'ckeditor',
+    'ckeditor_uploader'
+
 ]
+
+CKEDITOR_UPLOAD_PATH = "images/lessons/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,9 +85,9 @@ WSGI_APPLICATION = 'ecourse.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'coursedb',
+        'NAME': 'coursedb2',
         'USER': 'root',
-        'PASSWORD': '12345678',
+        'PASSWORD': 'Admin@123',
         'HOST': '' # mặc định localhost
     }
 }
