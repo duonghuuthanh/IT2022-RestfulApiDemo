@@ -30,6 +30,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
+
+CKEDITOR_UPLOAD_PATH = "images/ckeditor/"
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'courses.apps.CoursesConfig'
+    'courses.apps.CoursesConfig',
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 MIDDLEWARE = [

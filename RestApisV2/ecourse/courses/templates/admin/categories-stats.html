@@ -1,0 +1,10 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<h1>THONG KE SO KHOA HOC CUA CAC DANH MUC</h1>
+<h3>SO DANH MUC: {{ count }}</h3>
+<ul>
+    {% for s in stats %}
+    <li>{{ s.id }} - {{ s.name }}: {{ s.course_counter }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
