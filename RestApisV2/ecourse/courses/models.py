@@ -34,3 +34,24 @@ class Course(ModelBase):
 
     def __str__(self):
         return self.subject
+
+
+class Lesson(ModelBase):
+    subject = models.CharField(max_length=255)
+    content = RichTextField()
+    image = models.ImageField(null=True, upload_to='lessons/%Y/%m')
+    course = models.ForeignKey(Course,
+                               related_name='lessons',
+                               related_query_name='my_lesson',
+                               on_delete=models.CASCADE)
+    tags = models.ManyToManyField('Tag')
+
+    def __str__(self):
+        return self.subject
+
+
+class Tag(ModelBase):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
