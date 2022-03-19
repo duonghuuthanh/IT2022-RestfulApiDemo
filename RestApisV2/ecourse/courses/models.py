@@ -55,3 +55,12 @@ class Tag(ModelBase):
 
     def __str__(self):
         return self.name
+
+
+class Comment(ModelBase):
+    content = models.CharField(max_length=255)
+    lesson = models.ForeignKey(Lesson, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content
