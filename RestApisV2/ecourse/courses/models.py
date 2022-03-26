@@ -4,7 +4,7 @@ from ckeditor.fields import RichTextField
 
 
 class User(AbstractUser):
-    pass
+    avatar = models.ImageField(null=True, upload_to='users/%Y/%m')
 
 
 class ModelBase(models.Model):
@@ -64,3 +64,20 @@ class Comment(ModelBase):
 
     def __str__(self):
         return self.content
+
+
+class ActionBase(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+        unique_together = ('user', 'lesson')
+
+
+class Like(ActionBase):
+    active = models.BooleanField(default=False)
+
+
+class Rating(ActionBase):
+    rate = models.SmallIntegerField(default=0)

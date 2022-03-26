@@ -46,15 +46,49 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class LessonDetailSerializer(LessonSerializer):
+    like = serializers.SerializerMethodField()
+
+    def get_like(self, obj):
+        request = self.context['request']
+        if request.user.is_authenticated:
+            return obj.like_set.filter(user=request.user, active=True).exists()
+
     class Meta:
         model = LessonSerializer.Meta.model
-        fields = LessonSerializer.Meta.fields + ['content']
+        fields = LessonSerializer.Meta.fields + ['content', 'like']
 
 
 class UserSerializer(serializers.ModelSerializer):
+    avatar_path = serializers.SerializerMethodField(source='avatar')
+
+    def get_avatar_path(self, obj):
+        request = self.context['request']
+        if obj.avatar and not obj.avatar.name.startswith('/static'):
+            path = '/static/%s' % obj.avatar.name
+
+            return request.build_absolute_uri(path)
+
     class Meta:
         model = User
-        fields = ['pk', 'username', 'first_name', 'last_name']
+        fields = ['username', 'password', 'first_name', 'last_name', 'email', 'avatar', 'avatar_path']
+        extra_kwargs = {
+            'password': {
+                'write_only': True
+            }, 'avatar_path': {
+                'read_only': True
+            }, 'avatar': {
+                'write_only': True
+            }
+        }
+
+    def create(self, validated_data):
+        data = validated_data.copy()
+
+        u = User(**data)
+        u.set_password(u.password)
+        u.save()
+
+        return u
 
 
 class CreateCommentSerializer(serializers.ModelSerializer):
