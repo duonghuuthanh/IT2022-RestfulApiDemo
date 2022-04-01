@@ -1,7 +1,7 @@
 from rest_framework import viewsets, generics, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Category, Course, Lesson, Comment, User
+from .models import Category, Course, Lesson, Comment, User, Like, Rating
 from .serializers import (
     CategorySerializer, CourseSerializer,
     LessonSerializer, LessonDetailSerializer,
@@ -56,6 +56,12 @@ class LessonViewSet(viewsets.ViewSet, generics.RetrieveAPIView):
     queryset = Lesson.objects.filter(active=True)
     serializer_class = LessonDetailSerializer
 
+    def get_permissions(self):
+        if self.action in ['like', 'rating']:
+            return [permissions.IsAuthenticated()]
+
+        return [permissions.AllowAny()]
+
     @swagger_auto_schema(
         operation_description='Get the comments of a lesson',
         responses={
@@ -69,6 +75,34 @@ class LessonViewSet(viewsets.ViewSet, generics.RetrieveAPIView):
 
         return Response(CommentSerializer(comments, many=True).data,
                         status=status.HTTP_200_OK)
+
+    @action(methods=['post'], url_path='like', detail=True)
+    def like(self, request, pk):
+        lesson = self.get_object()
+        user = request.user
+
+        l, _ = Like.objects.get_or_create(lesson=lesson, user=user)
+        l.active = not l.active
+        try:
+            l.save()
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['post'], url_path='rating', detail=True)
+    def rating(self, request, pk):
+        lesson = self.get_object()
+        user = request.user
+
+        r, _ = Rating.objects.get_or_create(lesson=lesson, user=user)
+        r.rate = request.data.get('rate', 0)
+        try:
+            r.save()
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class CommentViewSet(viewsets.ViewSet, generics.CreateAPIView,

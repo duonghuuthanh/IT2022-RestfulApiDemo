@@ -66,3 +66,22 @@ class Tag(ModelBase):
 
     def __str__(self):
         return self.name
+
+
+class ActionBase(ModelBase):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'lesson')
+        abstract = True
+
+
+class Like(ActionBase):
+    active = models.BooleanField(default=False)
+
+
+class Rating(ActionBase):
+    rate = models.SmallIntegerField(default=0)
