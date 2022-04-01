@@ -4,7 +4,7 @@ from ckeditor.fields import RichTextField
 
 
 class User(AbstractUser):
-    pass
+    avatar = models.ImageField(null=True, upload_to='users/%Y/%m')
 
 
 class ModelBase(models.Model):
@@ -48,6 +48,17 @@ class Lesson(ModelBase):
 
     def __str__(self):
         return self.subject
+
+
+class Comment(ModelBase):
+    content = models.TextField()
+    lesson = models.ForeignKey(Lesson,
+                               related_name='comments',
+                               on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content
 
 
 class Tag(ModelBase):
