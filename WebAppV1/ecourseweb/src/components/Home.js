@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 function Home() {
     const [courses, setCourses] = useState([])
@@ -32,7 +32,7 @@ function Home() {
             <h1 className="text-center text-danger">DANH MUC KHOA HOC</h1>
             <Row>
                 {courses.map(c => {
-                    return <Item image={c.image} subject={c.subject} />
+                    return <Item id={c.id} image={c.image} subject={c.subject} />
                 })}
             </Row>
         </Container>   
@@ -40,13 +40,19 @@ function Home() {
 }
 
 const Item = (props) => {
+    const nav = useNavigate()
+
+    const goToLesson = () => {
+        nav(`/courses/${props.id}/lessons`)
+    }
+
     return (
         <Col md={4} xs={12}>
             <Card>
                 <Card.Img variant="top" src={props.image} />
                 <Card.Body>
                     <Card.Title>{props.subject}</Card.Title>
-                    <Button variant="primary">Xem cac bai hoc</Button>
+                    <Button variant="primary" onClick={goToLesson}>Xem cac bai hoc</Button>
                 </Card.Body>
             </Card>
         </Col>

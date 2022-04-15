@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
+import { UserContext } from "../App"
+import Api, { endpoints } from '../configs/Api';
 
 function Header() {
     const [categories, setCategories] = useState([])
     const [kw, setKw] = useState("")
     const nav = useNavigate()
+    const [user, dispatch] = useContext(UserContext)
 
     useEffect(() => {
         let loadCategories = async () => {
-            let res = await fetch("/categories.json")
-            let data = await res.json()
-            setCategories(data)
+            let res = await Api.get(endpoints['categories'])
+            // let res = await fetch("/categories.json")
+            // let data = await res.json()
+            setCategories(res.data)
         }
         
         loadCategories()
@@ -23,6 +27,18 @@ function Header() {
         nav(`/?kw=${kw}`)
     }
 
+    const logout = (evt) => {
+        evt.preventDefault()
+        dispatch({"type": "logout"})
+    }
+
+    let btn = <Link to="/login" className="nav-link text-danger">Dang nhap</Link>
+    if (user != null)
+        btn = <>
+            <Link to="/" className="nav-link text-danger">{user.username}</Link>
+            <a href="#" onClick={logout} className="nav-link text-danger">Dang xuat</a>
+        </>
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
@@ -33,6 +49,8 @@ function Header() {
                         const url = `/?category_id=${c.id}`
                         return <Link to={url} className="nav-link">{c.name}</Link>
                     })}
+                    
+                    {btn}
                 </Nav>
                 <Form className="d-flex" onSubmit={search}>
                     <FormControl
