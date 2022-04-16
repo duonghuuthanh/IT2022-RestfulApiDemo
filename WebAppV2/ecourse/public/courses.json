@@ -1,0 +1,21 @@
+[{
+    "id": 1,
+    "subject": "Cong nghe phan mem",
+    "image": "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647930931/laoxgo0d5zx1jnwxbyqr.jpg",
+    "category_id": 1
+}, {
+    "id": 2,
+    "subject": "Kiem thu phan mem",
+    "image": "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647930931/laoxgo0d5zx1jnwxbyqr.jpg",
+    "category_id": 1
+}, {
+    "id": 3,
+    "subject": "Xay phan mem",
+    "image": "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647930931/laoxgo0d5zx1jnwxbyqr.jpg",
+    "category_id": 1
+}, {
+    "id": 4,
+    "subject": "Nhap mon tri tue nhan tao",
+    "image": "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647930931/laoxgo0d5zx1jnwxbyqr.jpg",
+    "category_id": 2
+}]

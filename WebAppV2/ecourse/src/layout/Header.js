@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { Navbar, Container, Nav } from 'react-bootstrap'
+import React, { useState, useEffect, useContext } from 'react'
+import { Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../App';
 
 const Header = () => {
     const [categories, setCategories] = useState([])
+    const [kw, setKw] = useState()
+    const nav = useNavigate()
+    const [user, dispatch] = useContext(UserContext)
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -16,21 +20,57 @@ const Header = () => {
         loadCategories()
     }, [])
 
+    const search = (event) => {
+        event.preventDefault()
+
+        nav(`/?kw=${kw}`)
+    }
+
+    const logout = (event) => {
+        event.preventDefault()
+        dispatch({"type": "logout"})
+        nav("/login")
+    }
+
+    let btn = <Link to="/login" className="nav-link text-info">Dang nhap</Link>
+    if (user != null) {
+        btn = <>
+            <Link to="/" className="nav-link text-info">Welcome {user.username}!</Link>
+            <a href="#" onClick={logout} className="nav-link text-info">Dang xuat</a>
+        </>
+    }
+        
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Container>
+          
             <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
                     <Link to="/" className="nav-link">Trang chu</Link>
 
-                    {categories.map(c => <Link to="/?cateId=1" className="nav-link">{c.name}</Link>)}
+                    {categories.map(c => {
+                        const url = `/?category_id=${c.id}`
+                        return <Link to={url} className="nav-link">{c.name}</Link>
+                    })}
 
-                    
+                    {btn}
                 </Nav>
+                <Form onSubmit={search} className="d-flex">
+                    <FormControl
+                    type="search"
+                    name="kw"
+                    value={kw}
+                    onChange={evt => setKw(evt.target.value)}
+                    placeholder="Nhap tu khoa"
+                    className="me-2"
+                    aria-label="Search"
+                    />
+                    <Button type="submit" variant="outline-success">Tim</Button>
+                </Form>
             </Navbar.Collapse>
-            </Container>
+           
         </Navbar>
  
     )
