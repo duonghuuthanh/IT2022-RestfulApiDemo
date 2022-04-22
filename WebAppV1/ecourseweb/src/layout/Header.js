@@ -13,8 +13,7 @@ function Header() {
     useEffect(() => {
         let loadCategories = async () => {
             let res = await Api.get(endpoints['categories'])
-            // let res = await fetch("/categories.json")
-            // let data = await res.json()
+
             setCategories(res.data)
         }
         
@@ -41,7 +40,7 @@ function Header() {
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+            <Link to="/" className="navbar-brand">e-Course Online</Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
@@ -59,8 +58,7 @@ function Header() {
                         onChange={event => setKw(event.target.value)}
                         placeholder="Tu khoa..."
                         className="me-2"
-                        aria-label="Search"
-                        />
+                        aria-label="Search" />
                     <Button type="submit" variant="outline-success">Tim</Button>
                 </Form>
             </Navbar.Collapse>

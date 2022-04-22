@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Container, Row,  Spinner } from 'react-bootstrap';
+import { useSearchParams } from 'react-router-dom';
+import Api, { endpoints } from '../configs/Api';
+import Item from '../layout/Item';
 
 function Home() {
     const [courses, setCourses] = useState([])
     const [q] = useSearchParams()
 
     useEffect(() => {
-        console.info(Math.random())
         const loadCourses = async () => {
-            const res = await fetch("/courses.json")
-            let data = await res.json()
+            let query = ""
 
             let cateId = q.get("category_id")
             if (cateId !== null)
-                data = data.filter(c => c.category_id == cateId)
-
+                query += `category_id=${cateId}`
 
             let kw = q.get("kw")
             if (kw !== null)
-                data = data.filter(c => c.subject.indexOf(kw) >= 0)
+                if (query === "")
+                    query += `kw=${kw}`
+                else
+                    query += `&kw=${kw}`  
 
-            setCourses(data)
+            const res = await Api.get(`${endpoints['courses']}?${query}`)
+            setCourses(res.data.results)
         }
 
         loadCourses()
@@ -30,32 +33,15 @@ function Home() {
     return (
         <Container>
             <h1 className="text-center text-danger">DANH MUC KHOA HOC</h1>
+            
+            {courses.length == 0 && <Spinner animation="grow" />}
+            
             <Row>
                 {courses.map(c => {
                     return <Item id={c.id} image={c.image} subject={c.subject} />
                 })}
             </Row>
         </Container>   
-    )
-}
-
-const Item = (props) => {
-    const nav = useNavigate()
-
-    const goToLesson = () => {
-        nav(`/courses/${props.id}/lessons`)
-    }
-
-    return (
-        <Col md={4} xs={12}>
-            <Card>
-                <Card.Img variant="top" src={props.image} />
-                <Card.Body>
-                    <Card.Title>{props.subject}</Card.Title>
-                    <Button variant="primary" onClick={goToLesson}>Xem cac bai hoc</Button>
-                </Card.Body>
-            </Card>
-        </Col>
     )
 }
 
