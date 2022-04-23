@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics, status, permissions
+from rest_framework import viewsets, generics, status, permissions, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Category, Course, Lesson, Comment, User, Like, Rating
@@ -31,6 +31,19 @@ class CourseViewSet(viewsets.ViewSet, generics.ListAPIView):
     queryset = Course.objects.filter(active=True)
     serializer_class = CourseSerializer
     pagination_class = CoursePaginator
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        kw = self.request.query_params.get("kw")
+        if kw:
+            queryset = queryset.filter(subject__icontains=kw)
+
+        category_id = self.request.query_params.get("category_id")
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        return queryset
 
     @swagger_auto_schema(
         operation_description='Get the lessons of a course',
@@ -121,3 +134,25 @@ class CommentViewSet(viewsets.ViewSet, generics.CreateAPIView,
 class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
     queryset = User.objects.filter(is_active=True)
     serializer_class = UserSerializer
+
+    def get_permissions(self):
+        if self.action == 'current_user':
+            return [permissions.IsAuthenticated()]
+
+        return [permissions.AllowAny()]
+
+    @action(methods=['get'], url_path="current-user", detail=False)
+    def current_user(self, request):
+        return Response(self.serializer_class(request.user, context={'request': request}).data,
+                        status=status.HTTP_200_OK)
+
+
+class MyCourseView(generics.ListCreateAPIView):
+    lookup_field = ['subject']
+    queryset = Course.objects.filter(active=True)
+    serializer_class = CourseSerializer
+
+
+class MyCourseDetailView(generics.RetrieveAPIView):
+    queryset = Course.objects.filter(active=True)
+    serializer_class = CourseSerializer

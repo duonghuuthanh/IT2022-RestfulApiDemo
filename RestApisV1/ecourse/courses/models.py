@@ -28,6 +28,7 @@ class Course(ModelBase):
     description = models.TextField(null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to='courses/%Y/%m')
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
+    pre_courses = models.ManyToManyField('self', null=True, symmetrical=False)
 
     def __str__(self):
         return self.subject
@@ -45,9 +46,19 @@ class Lesson(ModelBase):
                                related_query_name='my_lesson',
                                on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag')
+    viewers = models.ManyToManyField(User, through='UserLessonView')
 
     def __str__(self):
         return self.subject
+
+
+class UserLessonView(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    reading_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'lesson')
 
 
 class Comment(ModelBase):
