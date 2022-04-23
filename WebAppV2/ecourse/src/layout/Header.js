@@ -3,6 +3,7 @@ import { Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../App';
+import Api, { endpoints } from '../configs/Api';
 
 const Header = () => {
     const [categories, setCategories] = useState([])
@@ -12,9 +13,11 @@ const Header = () => {
 
     useEffect(() => {
         const loadCategories = async () => {
-            let res = await fetch("/data.json")
-            let data = await res.json()
-            setCategories(data)
+            let res = await Api.get(endpoints['categories'])
+            setCategories(res.data)
+            // let res = await fetch("/data.json")
+            // let data = await res.json()
+            // setCategories(data)
         }
 
         loadCategories()
@@ -44,7 +47,7 @@ const Header = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
           
-            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+            <Navbar.Brand href="#home">e-Course Online</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
@@ -58,15 +61,9 @@ const Header = () => {
                     {btn}
                 </Nav>
                 <Form onSubmit={search} className="d-flex">
-                    <FormControl
-                    type="search"
-                    name="kw"
-                    value={kw}
-                    onChange={evt => setKw(evt.target.value)}
-                    placeholder="Nhap tu khoa"
-                    className="me-2"
-                    aria-label="Search"
-                    />
+                    <FormControl type="search" name="kw" value={kw}
+                                 onChange={evt => setKw(evt.target.value)}
+                                 placeholder="Nhap tu khoa" className="me-2" aria-label="Search" />
                     <Button type="submit" variant="outline-success">Tim</Button>
                 </Form>
             </Navbar.Collapse>

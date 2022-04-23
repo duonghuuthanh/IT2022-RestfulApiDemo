@@ -6,6 +6,7 @@ import Home from "./components/Home"
 import Lesson from "./components/Lesson"
 import Login from './components/Login'
 import myReducer from './reducers/MyReducer'
+import LessonDetail from './components/LessonDetail'
 
 export const UserContext = createContext()
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/courses/:courseId/lessons" element={<Lesson />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/lessons/:lessonId" element={<LessonDetail />} />
         </Routes>
 
         <Footer />
