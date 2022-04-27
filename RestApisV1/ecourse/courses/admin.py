@@ -44,14 +44,25 @@ class CourseAdmin(admin.ModelAdmin):
                                 })
 
 
-class LessonAdmin(admin.ModelAdmin):
-    form = LessonForm
 
 
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name']
     list_filter = ['name', 'created_date']
     list_display = ['id', 'name', 'created_date']
+
+
+class LessonTagInlineAdmin(admin.TabularInline):
+    model = Lesson.tags.through
+
+
+class TagAdmin(admin.ModelAdmin):
+    inlines = [LessonTagInlineAdmin, ]
+
+
+class LessonAdmin(admin.ModelAdmin):
+    form = LessonForm
+    inlines = [LessonTagInlineAdmin, ]
 
 
 # Register your models here.

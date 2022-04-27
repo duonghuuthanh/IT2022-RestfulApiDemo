@@ -97,9 +97,9 @@ WSGI_APPLICATION = 'ecourse.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'coursedb',
+        'NAME': 'coursedb2',
         'USER': 'root',
-        'PASSWORD': '12345678',
+        'PASSWORD': 'Admin@123',
         'HOST': ''  # mặc định localhost
     }
 }

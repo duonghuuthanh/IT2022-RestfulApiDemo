@@ -16,6 +16,13 @@ class ModelBase(models.Model):
         abstract = True
 
 
+class CVOnline(ModelBase):
+    intro = RichTextField()
+    from_salary = models.DecimalField(default=0, decimal_places=2, max_digits=10)
+    to_salary = models.DecimalField(default=0, decimal_places=2, max_digits=10)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+
+
 class Category(ModelBase):
     name = models.CharField(max_length=50, unique=True)
 
@@ -55,6 +62,7 @@ class Lesson(ModelBase):
 class UserLessonView(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    counter = models.IntegerField(default=0)
     reading_date = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -79,7 +87,7 @@ class Tag(ModelBase):
         return self.name
 
 
-class ActionBase(ModelBase):
+class ActionBase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
