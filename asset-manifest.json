@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/ecourse/static/css/main.2cce8147.chunk.css",
+    "main.js": "/ecourse/static/js/main.4cb5a501.chunk.js",
+    "main.js.map": "/ecourse/static/js/main.4cb5a501.chunk.js.map",
+    "runtime~main.js": "/ecourse/static/js/runtime~main.4295fb29.js",
+    "runtime~main.js.map": "/ecourse/static/js/runtime~main.4295fb29.js.map",
+    "static/css/2.63f31f8d.chunk.css": "/ecourse/static/css/2.63f31f8d.chunk.css",
+    "static/js/2.0c68f3b8.chunk.js": "/ecourse/static/js/2.0c68f3b8.chunk.js",
+    "static/js/2.0c68f3b8.chunk.js.map": "/ecourse/static/js/2.0c68f3b8.chunk.js.map",
+    "index.html": "/ecourse/index.html",
+    "precache-manifest.0d809a5b226934f624e581f89150c726.js": "/ecourse/precache-manifest.0d809a5b226934f624e581f89150c726.js",
+    "service-worker.js": "/ecourse/service-worker.js",
+    "static/css/2.63f31f8d.chunk.css.map": "/ecourse/static/css/2.63f31f8d.chunk.css.map",
+    "static/css/main.2cce8147.chunk.css.map": "/ecourse/static/css/main.2cce8147.chunk.css.map"
+  }
+}
