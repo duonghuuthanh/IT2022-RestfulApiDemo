@@ -5,6 +5,7 @@ from .models import Category, Course, Lesson, Comment, User, Like, Rating
 from .serializers import (
     CategorySerializer, CourseSerializer,
     LessonSerializer, LessonDetailSerializer,
+    AuthLessonDetailSerializer,
     CommentSerializer, CreateCommentSerializer,
     UserSerializer
 )
@@ -68,6 +69,12 @@ class CourseViewSet(viewsets.ViewSet, generics.ListAPIView):
 class LessonViewSet(viewsets.ViewSet, generics.RetrieveAPIView):
     queryset = Lesson.objects.filter(active=True)
     serializer_class = LessonDetailSerializer
+
+    def get_serializer_class(self):
+        if self.request.user.is_authenticated:
+            return AuthLessonDetailSerializer
+
+        return LessonDetailSerializer
 
     def get_permissions(self):
         if self.action in ['like', 'rating']:
