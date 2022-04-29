@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Container, Spinner, Row } from 'react-bootstrap';
 import Api, { endpoints } from '../configs/Api';
 import Item from '../layout/Item';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function Lesson() {
     const [lessons, setLessons] = useState([])
@@ -21,8 +22,8 @@ function Lesson() {
 
     return (
         <Container>
-            <h1 className="text-center text-info">MY LESSON (COURSE: {courseId})</h1>
-
+            <h1 className="text-center text-info">MY LESSON (COURSE: {courseId}) </h1>
+            
             {lessons.length == 0 && <Spinner animation="grow" />}
             
             <Row>
