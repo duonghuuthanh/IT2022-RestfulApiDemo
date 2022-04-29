@@ -108,7 +108,7 @@ class LessonViewSet(viewsets.ViewSet, generics.RetrieveAPIView):
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(data=AuthLessonDetailSerializer(lesson, context={'request': request}).data, status=status.HTTP_200_OK)
 
     @action(methods=['post'], url_path='rating', detail=True)
     def rating(self, request, pk):
@@ -122,7 +122,7 @@ class LessonViewSet(viewsets.ViewSet, generics.RetrieveAPIView):
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(data=AuthLessonDetailSerializer(lesson, context={'request': request}).data, status=status.HTTP_200_OK)
 
 
 class CommentViewSet(viewsets.ViewSet, generics.CreateAPIView,
