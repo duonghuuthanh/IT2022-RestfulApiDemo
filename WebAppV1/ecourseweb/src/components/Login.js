@@ -2,21 +2,35 @@ import React, { useState, useContext } from 'react'
 import { Form, Button, Container } from 'react-bootstrap'
 import { UserContext } from '../App'
 import { Navigate } from 'react-router-dom'
+import Api, { endpoints, authApi } from '../configs/Api'
+import cookies from 'react-cookies'
 
 const Login = () => {
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
     const [user, dispatch] = useContext(UserContext)
 
-    const login = (evt) => {
+    const login = async (evt) => {
         evt.preventDefault() 
-        if (username === 'admin' && password === '123')
-            dispatch({
-                "type": "login",
-                "payload": {
-                    "username": "admin"
-                }
-            })
+        
+        const res = await Api.post(endpoints['login'], {
+            'username': username,
+            'password': password,
+            'client_id': 'Vbe8euZZQJoWJ2UzW9wDThg4hJEZHHbhFmnfj7UR',
+            'client_secret': 'cVm4w4hSdy4MtwbP4KuNgXkGPeQJ9yrQdBvXHGR6b3e97F2bYqQ81XJ49FEufzjcw4SKwpuOZQiCLsNelHY1MkuYTGBRcSqtWmSlebSUk27WfyDskCB2VeCQihnEKdZ2',
+            'grant_type': 'password'
+        })
+
+        // luu trong cookies
+        console.info(res.data)
+        cookies.save('token', res.data.access_token)
+
+        const user = await authApi().get(endpoints['current-user'])
+        console.info(user.data)
+        dispatch({
+            'type': 'login',
+            'payload': user.data
+        })
     }
 
 

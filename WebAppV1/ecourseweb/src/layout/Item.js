@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Col, Card, Button } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 
@@ -29,4 +29,4 @@ const Item = (props) => {
     )
 }
 
-export default Item
+export default memo(Item)
