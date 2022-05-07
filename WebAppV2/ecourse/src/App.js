@@ -7,11 +7,13 @@ import Lesson from "./components/Lesson"
 import Login from './components/Login'
 import myReducer from './reducers/MyReducer'
 import LessonDetail from './components/LessonDetail'
+import cookies from 'react-cookies'
+import Register from './components/Register'
 
 export const UserContext = createContext()
 
 const App = () => {
-  const [user, dispatch] = useReducer(myReducer)
+  const [user, dispatch] = useReducer(myReducer, cookies.load('current_user'))
 
   return (
     <BrowserRouter>
@@ -23,6 +25,7 @@ const App = () => {
           <Route path="/courses/:courseId/lessons" element={<Lesson />} />
           <Route path="/login" element={<Login />} />
           <Route path="/lessons/:lessonId" element={<LessonDetail />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
 
         <Footer />
