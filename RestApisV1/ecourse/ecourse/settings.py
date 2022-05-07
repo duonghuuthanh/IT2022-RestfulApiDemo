@@ -52,6 +52,10 @@ REST_FRAMEWORK = {
     )
 }
 
+OAUTH2_PROVIDER = {
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
+}
+
 CKEDITOR_UPLOAD_PATH = "images/lessons/"
 
 STATIC_URL = '/static/'
